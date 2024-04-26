@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UserSignUpDto } from './dto/user-signup.dto';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,7 @@ export class UsersService {
   async signup(userSignUpDto:UserSignUpDto):Promise<UserEntity>{
     const userExist=await this.findUserByEmail(userSignUpDto.email)
     if(userExist) throw new BadRequestException('Email is not available.')
+    userSignUpDto.password=await hash(userSignUpDto.password,10)
 
     const user=this .usersRepository.create(userSignUpDto);
     return await this.usersRepository.save(user);
