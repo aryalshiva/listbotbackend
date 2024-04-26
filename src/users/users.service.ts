@@ -20,8 +20,11 @@ export class UsersService {
     if(userExist) throw new BadRequestException('Email is not available.')
     userSignUpDto.password=await hash(userSignUpDto.password,10)
 
-    const user=this .usersRepository.create(userSignUpDto);
-    return await this.usersRepository.save(user);
+    let user=this .usersRepository.create(userSignUpDto);
+    user=await this.usersRepository.save(user);
+    //here user save the info in user then implement delete password on it 
+    delete user.password
+    return user;
   }
   
   create(createUserDto: CreateUserDto) {
