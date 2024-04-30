@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserSignUpDto } from './dto/user-signup.dto';
 import { UserEntity } from './entities/user.entity';
+import { UserSignInDto } from './dto/user-signin.dto';
 
 @Controller('users')
 export class UsersController {
@@ -16,8 +17,8 @@ export class UsersController {
   }
 
   @Post('signin')
-  async signin(){
-
+  async signin(@Body() UserSignInDto:UserSignInDto){
+    return await this. usersService.signin(UserSignInDto);
 
   }
 

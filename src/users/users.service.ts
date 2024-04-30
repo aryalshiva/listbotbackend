@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UserSignUpDto } from './dto/user-signup.dto';
 import { hash } from 'bcrypt';
+import { UserSignInDto } from './dto/user-signin.dto';
 
 @Injectable()
 export class UsersService {
@@ -26,6 +27,11 @@ export class UsersService {
     delete user.password
     return user;
   }
+
+  async signin(userSignInDto:UserSignInDto){
+    const userExist=await this.usersRepository.createQueryBuilder('users').addSelect('users.password').where('users.email=email',{email:userSignInDto.email}).getOne();
+      return userExist;
+    }
   
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
