@@ -33,9 +33,9 @@ export class UsersController {
     return 'hi'
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Get('all')
+  async findAll(): Promise<UserEntity[]> {
+    return await this.usersService.findAll();
   }
 
   @Get(':id')
