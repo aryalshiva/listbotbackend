@@ -8,6 +8,7 @@ import { UserSignUpDto } from './dto/user-signup.dto';
 import { hash } from 'bcrypt';
 import { UserSignInDto } from './dto/user-signin.dto';
 import * as bcrypt from 'bcrypt';
+import { sign } from 'jsonwebtoken';
 
 @Injectable()
 export class UsersService {
@@ -60,5 +61,9 @@ export class UsersService {
 
   async findUserByEmail(email:string){
     return await this.usersRepository.findOneBy({email});
+  }
+
+  async accessToken(user:UserEntity){
+    return sign({id:user.id,email:user.email},process.env.ACCESS_TOKEN_SECRET_KEY,{expiresIn:process.env.ACCESS_TOKEN_EXPIRE_TIME})
   }
 }
