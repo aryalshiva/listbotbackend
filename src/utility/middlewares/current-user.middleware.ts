@@ -28,6 +28,8 @@ constructor(private readonly UserService:UsersService){}
         const{id}=<JwtPayLoad>verify(token,process.env.ACCESS_TOKEN_SECRET_KEY);
         const currentUser=await this.UserService.findOne(+id);
         req.currentUser=currentUser;
+        //this is to show in the log section remove it later 
+        console.log(currentUser);
         next();
     }
   }
