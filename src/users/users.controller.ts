@@ -38,8 +38,9 @@ export class UsersController {
     //return this.usersService.create(createUserDto);
     return 'hi'
   }
-  @AuthorizeRoles(Roles.ADMIN)
-  @UseGuards(AuthenticationGuard,AuthorizeGuard)
+  //this comment can be used if to declare two guards but authorize role have been implemented improved down code  
+ // @AuthorizeRoles(Roles.ADMIN)
+  @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
   @Get('all')
   async findAll(): Promise<UserEntity[]> {
     return await this.usersService.findAll();
