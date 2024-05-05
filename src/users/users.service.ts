@@ -31,7 +31,7 @@ export class UsersService {
   }
 
   async signin(userSignInDto:UserSignInDto): Promise<UserEntity>{
-    const userExist=await this.usersRepository.createQueryBuilder('users').addSelect('users.password').where('users.email=email',{email:userSignInDto.email}).getOne();
+    const userExist =await this.usersRepository.createQueryBuilder('users').addSelect('users.password').where('users.email = :email', { email: userSignInDto.email }).getOne();
     if(!userExist) throw new BadRequestException('Bad creadentials .')
       const matchPassword = await bcrypt.compare(userSignInDto.password, userExist.password);
     if (!matchPassword) throw new BadRequestException('Bad creadentials .');
@@ -39,7 +39,7 @@ export class UsersService {
     return userExist;
     }
   
-  create(createUserDto: CreateUserDto) {
+  create(CreateUserDto:CreateUserDto) {
     return 'This action adds a new user';
   }
 
