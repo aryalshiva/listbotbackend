@@ -25,7 +25,7 @@ export class UsersService {
 
     let user=this .usersRepository.create(userSignUpDto);
     user=await this.usersRepository.save(user);
-    //here user save the info in user then implement delete password on it 
+    //here user save the info in user then implement delete password on it s
     delete user.password
     return user;
   }
