@@ -1,11 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { CreateListingDto } from './dto/create-listing.dto';
 import { UpdateListingDto } from './dto/update-listing.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ListingEntity } from './entities/listing.entity';
+import { Repository } from 'typeorm';
+import { UserEntity } from 'src/users/entities/user.entity';
+
 
 @Injectable()
 export class ListingService {
-  create(createListingDto: CreateListingDto) {
-    return 'This action adds a new listing';
+constructor(@InjectRepository(ListingEntity) private readonly listingRepository:Repository<ListingEntity>){}
+  
+
+async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise <ListingEntity> {
+    const listing= this.listingRepository.create(createListingDto);
+    listing.addedBy=currentUser;
+    return await this.listingRepository.save(listing)
+
   }
 
   findAll() {

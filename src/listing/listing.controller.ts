@@ -1,15 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ListingService } from './listing.service';
 import { CreateListingDto } from './dto/create-listing.dto';
 import { UpdateListingDto } from './dto/update-listing.dto';
+import { CurrentUser } from 'src/utility/decorators/current-user.decorator';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { AuthenticationGuard } from 'src/utility/guards/authentication.guard';
+import { promises } from 'dns';
+import { ListingEntity } from './entities/listing.entity';
 
 @Controller('listing')
 export class ListingController {
   constructor(private readonly listingService: ListingService) {}
 
+  //both user can create website listing so i have not added role specific 
+  @UseGuards(AuthenticationGuard)
   @Post()
-  create(@Body() createListingDto: CreateListingDto) {
-    return this.listingService.create(createListingDto);
+  async create(@Body() createListingDto: CreateListingDto, @CurrentUser() currentUser:UserEntity):Promise<ListingEntity>{
+    return await this.listingService.create(createListingDto,currentUser);
   }
 
   @Get()
