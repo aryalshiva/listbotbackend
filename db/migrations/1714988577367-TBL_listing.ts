@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class AddTBLListing1714982094481 implements MigrationInterface {
-    name = 'AddTBLListing1714982094481'
+export class TBLListing1714988577367 implements MigrationInterface {
+    name = 'TBLListing1714988577367'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "listings" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "subTitle" character varying NOT NULL, "description" character varying NOT NULL, "url" character varying NOT NULL, "image" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "addedById" integer, CONSTRAINT "PK_520ecac6c99ec90bcf5a603cdcb" PRIMARY KEY ("id"))`);
