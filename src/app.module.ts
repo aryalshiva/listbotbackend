@@ -3,9 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from 'db/data-source';
 import { UsersModule } from './users/users.module';
 import { CurrentUserMiddleware } from './utility/middlewares/current-user.middleware';
+import { ListingModule } from './listing/listing.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(dataSourceOptions), UsersModule],
+  imports: [TypeOrmModule.forRoot(dataSourceOptions), UsersModule, ListingModule],
   controllers: [],
   providers: [],
 })

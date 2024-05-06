@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, Timestamp } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Timestamp } from "typeorm";
 import { Roles } from "src/utility/common/user-roles.enum"
+import { ListingEntity } from "src/listing/entities/listing.entity";
 
 @Entity('users')
 export class UserEntity {
@@ -17,6 +18,9 @@ export class UserEntity {
     CreateAt:Timestamp;
     @CreateDateColumn()
     UpdatedAt:Timestamp;
+
+    @OneToMany(()=>ListingEntity,(list=>list.addedBy))
+    listings:ListingEntity[];
     
 
 }
