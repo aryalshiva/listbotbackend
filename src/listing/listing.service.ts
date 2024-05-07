@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateListingDto } from './dto/create-listing.dto';
 import { UpdateListingDto } from './dto/update-listing.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -28,8 +28,12 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
     return await this.listingRepository.findOneBy({id});
   }
 
-  update(id: number, updateListingDto: UpdateListingDto) {
-    return `This action updates a #${id} listing`;
+  async update(id: number, fields:Partial <UpdateListingDto>) {
+    const listing=await this.findOne(id);
+    if(!listing)throw new NotFoundException('listing not found');
+    Object.assign(listing,fields);
+
+    return await this.listingRepository.save(listing);
   }
 
   remove(id: number) {

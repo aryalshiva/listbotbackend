@@ -29,9 +29,10 @@ export class ListingController {
     return await this.listingService.findOne(+id);
   }
 
+  @UseGuards(AuthenticationGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto) {
-    return this.listingService.update(+id, updateListingDto);
+  async update(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto) {
+    return await this.listingService.update(+id, updateListingDto);
   }
 
   @Delete(':id')
