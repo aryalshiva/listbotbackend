@@ -23,8 +23,9 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
     return `This action returns all listing`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} listing`;
+  // to retrieve listing from id one by one 
+  async findOne(id: number) {
+    return await this.listingRepository.findOneBy({id});
   }
 
   update(id: number, updateListingDto: UpdateListingDto) {

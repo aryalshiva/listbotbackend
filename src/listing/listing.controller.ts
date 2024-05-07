@@ -25,8 +25,8 @@ export class ListingController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.listingService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.listingService.findOne(+id);
   }
 
   @Patch(':id')
