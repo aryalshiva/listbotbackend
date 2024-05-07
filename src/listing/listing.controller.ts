@@ -20,8 +20,8 @@ export class ListingController {
   }
 
   @Get()
-  findAll() {
-    return this.listingService.findAll();
+  async findAll() {
+    return await this.listingService.findAll();
   }
 
   @Get(':id')

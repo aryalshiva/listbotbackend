@@ -19,8 +19,8 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
 
   }
 
-  findAll() {
-    return `This action returns all listing`;
+  async findAll() {
+    return await this.listingRepository.find();
   }
 
   // to retrieve listing from id one by one 
