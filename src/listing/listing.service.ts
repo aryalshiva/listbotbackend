@@ -19,16 +19,16 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
 
   }
 
-  async findAll() {
+  async findAll():Promise<ListingEntity []> {
     return await this.listingRepository.find();
   }
 
   // to retrieve listing from id one by one 
-  async findOne(id: number) {
+  async findOne(id: number):Promise<ListingEntity>{
     return await this.listingRepository.findOneBy({id});
   }
 
-  async update(id: number, fields:Partial <UpdateListingDto>) {
+  async update(id: number, fields:Partial <UpdateListingDto>):Promise<ListingEntity> {
     const listing=await this.findOne(id);
     if(!listing)throw new NotFoundException('listing not found');
     Object.assign(listing,fields);

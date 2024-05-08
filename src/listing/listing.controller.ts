@@ -20,18 +20,18 @@ export class ListingController {
   }
 
   @Get()
-  async findAll() {
+  async findAll():Promise<ListingEntity[]> {
     return await this.listingService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string):Promise<ListingEntity> {
     return await this.listingService.findOne(+id);
   }
 
   @UseGuards(AuthenticationGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto) {
+  async update(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto):Promise<ListingEntity > {
     return await this.listingService.update(+id, updateListingDto);
   }
 
