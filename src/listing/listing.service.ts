@@ -25,7 +25,21 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
 
   // to retrieve listing from id one by one 
   async findOne(id: number):Promise<ListingEntity>{
-    return await this.listingRepository.findOneBy({id});
+    return await this.listingRepository.findOne({
+      where :{id:id},
+      //this will add the added by user 
+      relations:{addedBy:true},
+      //this code is select only id ,name ,email from the added user 
+      select:{
+        addedBy:{
+          id:true,
+          name:true,
+          email:true
+        }
+      }
+
+
+    });
   }
 
   async update(id: number, fields:Partial <UpdateListingDto>):Promise<ListingEntity> {
