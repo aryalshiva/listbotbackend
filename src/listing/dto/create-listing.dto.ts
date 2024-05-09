@@ -21,13 +21,4 @@ export class CreateListingDto {
     @IsOptional()
     @IsUrl({}, { message: 'Image must be a valid URL' })
     image?: string;
-
-    @IsOptional()
-    @IsIn(['notSent', 'pending', 'approved', 'rejected'], { message: 'Approval status must be one of "notSent", "pending", "approved", or "rejected"' })
-    approvalStatus: string;
-
-    @IsOptional()
-    @IsIn(['notYet', 'sendToAdmin'], { message: 'Send status must be either "notYet" or "sendToAdmin"' })
-    sendStatus: string;
-
 }

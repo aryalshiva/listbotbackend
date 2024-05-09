@@ -7,6 +7,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { AuthenticationGuard } from 'src/utility/guards/authentication.guard';
 import { promises } from 'dns';
 import { ListingEntity } from './entities/listing.entity';
+import { SendStatusDto } from './dto/send-listing.dto';
 
 @Controller('listing')
 export class ListingController {
@@ -34,6 +35,13 @@ export class ListingController {
   async update(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto):Promise<ListingEntity > {
     return await this.listingService.update(+id, updateListingDto);
   }
+
+    // Update sendApproval only
+    @UseGuards(AuthenticationGuard)
+    @Patch(':id/sendStatus')
+    async sendApproval(@Param('id') id: string, @Body() sendStatusDto: SendStatusDto): Promise<ListingEntity> {
+      return await this.listingService.update(+id , sendStatusDto);
+    }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

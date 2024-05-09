@@ -29,7 +29,7 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
       where :{id:id},
       //this will add the added by user 
       relations:{addedBy:true},
-      //this code is select only id ,name ,email from the added user 
+      //this is to add the following fields
       select:{
         addedBy:{
           id:true,
