@@ -34,6 +34,37 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
     })
   }
 
+    ///function to retrieve all approved 
+    async findAllApproved(): Promise<ListingEntity[]> {
+      return await this.listingRepository.find({
+         where: {
+        approvalStatus: ApprovalStatus.APPROVED ,
+        },
+      })
+    }
+
+    ///function to retrieve all rejected
+   async findAllRejected(): Promise<ListingEntity[]> {
+      return await this.listingRepository.find({
+    where: {
+    approvalStatus: ApprovalStatus.REJECTED , 
+    },
+   })
+  }
+
+    ///function to retrieve all rejected
+    async findAllPending(): Promise<ListingEntity[]> {
+      return await this.listingRepository.find({
+    where: {
+    approvalStatus: ApprovalStatus.PENDING , 
+    },
+   })
+  }
+
+
+
+
+
   // to retrieve listing from id one by one 
   async findOne(id: number):Promise<ListingEntity>{
     return await this.listingRepository.findOne({
