@@ -28,6 +28,12 @@ export class ListingController {
     return await this.listingService.findAll();
   }
 
+  @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
+  @Get('forApproval')
+  async findAllForApproval():Promise<ListingEntity[]>{
+    return await this.listingService.findAllForApproval();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string):Promise<ListingEntity> {
     return await this.listingService.findOne(+id);

@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ListingEntity } from './entities/listing.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { SendStatus } from 'src/utility/common/listing-sendStatus.enum';
+import { ApprovalStatus } from 'src/utility/common/listing-approvalStatus.enum';
 
 
 @Injectable()
@@ -21,6 +23,15 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
 
   async findAll():Promise<ListingEntity []> {
     return await this.listingRepository.find();
+  }
+
+  ///function to retrieve all findAllForApproval
+  async findAllForApproval(): Promise<ListingEntity[]> {
+    return await this.listingRepository.find({
+       where: {
+      sendStatus: SendStatus.SEND_TO_ADMIN ,
+      },
+    })
   }
 
   // to retrieve listing from id one by one 
