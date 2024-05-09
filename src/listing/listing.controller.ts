@@ -8,6 +8,9 @@ import { AuthenticationGuard } from 'src/utility/guards/authentication.guard';
 import { promises } from 'dns';
 import { ListingEntity } from './entities/listing.entity';
 import { SendStatusDto } from './dto/send-listing.dto';
+import { ApprovalStatusDto } from './dto/approved-listing.dto';
+import { AuthorizeGuard } from 'src/utility/guards/authorization.guard';
+import { Roles } from 'src/utility/common/user-roles.enum';
 
 @Controller('listing')
 export class ListingController {
@@ -40,7 +43,14 @@ export class ListingController {
     @UseGuards(AuthenticationGuard)
     @Patch(':id/sendStatus')
     async sendApproval(@Param('id') id: string, @Body() sendStatusDto: SendStatusDto): Promise<ListingEntity> {
-      return await this.listingService.update(+id , sendStatusDto);
+      return await this.listingService.update(+id , sendStatusDto );
+    }
+
+    //this is only for the admin can change the approval status 
+    @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
+    @Patch(':id/approvedStatus')
+    async ApprovalStatus(@Param('id') id: string,@Body() approvalStatusDto: ApprovalStatusDto ):Promise<ListingEntity>{
+      return await this.listingService.update(+id ,approvalStatusDto)
     }
 
   @Delete(':id')

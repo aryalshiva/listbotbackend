@@ -47,6 +47,11 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
     if(!listing)throw new NotFoundException('listing not found');
     Object.assign(listing,fields);
 
+        // If sendStatus is being updated and it's changing to 'sendToAdmin', set approvalStatus to 'pending'
+        if ('sendStatus' in fields && fields.sendStatus === 'sendToAdmin') {
+          listing.approvalStatus = 'pending';
+        }
+
     return await this.listingRepository.save(listing);
   }
 
