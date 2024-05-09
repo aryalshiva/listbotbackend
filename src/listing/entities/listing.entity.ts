@@ -15,6 +15,13 @@ description:string;
 url:string;
 @Column()
 image:string;
+
+@Column({ type: 'enum', enum: ['notSent', 'pending', 'approved', 'rejected'], default: 'notSent' })
+approvalStatus: string;
+
+@Column({ type: 'enum', enum: ['notYet', 'sendToAdmin'], default: 'notYet' })
+sendStatus: string;
+
 @CreateDateColumn()
 createdAt:Timestamp;
 @UpdateDateColumn()
