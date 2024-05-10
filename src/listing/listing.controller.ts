@@ -39,17 +39,17 @@ export class ListingController {
     return await this.listingService.findOne(+id);
   }
 
-  @UseGuards(AuthenticationGuard)
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto):Promise<ListingEntity > {
-    return await this.listingService.update(+id, updateListingDto);
-  }
+  // @UseGuards(AuthenticationGuard)
+  // @Patch(':id')
+  // async update(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto):Promise<ListingEntity > {
+  //   return await this.listingService.update(+id, updateListingDto);
+  // }
 
     // Update sendApproval only
     @UseGuards(AuthenticationGuard)
     @Patch(':id/sendStatus')
     async sendApproval(@Param('id') id: string, @Body() sendStatusDto: SendStatusDto): Promise<ListingEntity> {
-      return await this.listingService.update(+id , sendStatusDto );
+      return await this.listingService.updateSendStatus(+id , sendStatusDto );
     }
 
     //this is only for the admin can change the approval status 
