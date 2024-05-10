@@ -89,7 +89,7 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
     if(!listing)throw new NotFoundException('listing not found');
     Object.assign(listing,fields);
 
-        // If sendStatus is being updated and it's changing to 'sendToAdmin', set approvalStatus to 'pending'
+        // // If sendStatus is being updated and it's changing to 'sendToAdmin', set approvalStatus to 'pending'
         if ('sendStatus' in fields && fields.sendStatus === 'sendToAdmin') {
           listing.approvalStatus = 'pending';
         }
@@ -115,6 +115,23 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
    Object.assign(listing, fields);
    return await this.listingRepository.save(listing);
   }
+
+
+  ///function to update the listing after is has been send to the admin is user implement this he/she have to send the sendStatus again in order to see by the admin for approval
+  async updateAfterSendToAdmin(id: number, fields: Partial<UpdateListingDto>): Promise<ListingEntity> {
+    const listing = await this.findOne(id);
+    if (!listing) throw new NotFoundException('Listing not found');
+    if (listing.sendStatus === 'sendToAdmin') {
+      // Reset 'approvalStatus' and 'sendStatus'
+      listing.approvalStatus = 'notSent';
+      listing.sendStatus = 'notYet';
+    }
+    Object.assign(listing, fields);
+    return await this.listingRepository.save(listing);
+  }
+  
+
+
   
 
   remove(id: number) {

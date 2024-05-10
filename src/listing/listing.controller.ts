@@ -39,11 +39,21 @@ export class ListingController {
     return await this.listingService.findOne(+id);
   }
 
-  // @UseGuards(AuthenticationGuard)
-  // @Patch(':id')
-  // async update(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto):Promise<ListingEntity > {
-  //   return await this.listingService.update(+id, updateListingDto);
-  // }
+  @UseGuards(AuthenticationGuard)
+  @Patch('update/:id')
+  async updateAfterSendToAdmin(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto):Promise<ListingEntity > {
+    return await this.listingService.updateAfterSendToAdmin(+id, updateListingDto);
+  }
+
+
+  // this is the admin route admin can directly update 
+  @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() updateListingDto: UpdateListingDto):Promise<ListingEntity > {
+    return await this.listingService.update(+id, updateListingDto);
+  }
+
+
 
     // Update sendApproval only
     @UseGuards(AuthenticationGuard)
