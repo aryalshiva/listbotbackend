@@ -28,10 +28,54 @@ export class ListingController {
     return await this.listingService.findAll();
   }
 
+  //this is for the admin user 
   @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
   @Get('forApproval')
   async findAllForApproval():Promise<ListingEntity[]>{
     return await this.listingService.findAllForApproval();
+  }
+
+  @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
+  @Get('approved')
+  async findAllApproved(): Promise<ListingEntity[]> {
+    return await this.listingService.findAllApproved();
+  }
+
+  @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
+  @Get('rejected')
+  async findAllRejected(): Promise<ListingEntity[]> {
+    return await this.listingService.findAllRejected();
+  }
+
+  @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
+  @Get('pending')
+  async findAllPending(): Promise<ListingEntity[]> {
+    return await this.listingService.findAllPending();
+  }
+
+//this is for the normal user  
+  @UseGuards(AuthenticationGuard)
+  @Get('current/forApproval')
+  async findCurrentApproval(@CurrentUser() currentUser: UserEntity): Promise<ListingEntity[]> {
+    return await this.listingService.findCurrentApproval(currentUser.id);
+  }
+
+  @UseGuards(AuthenticationGuard)
+  @Get('current/approved')
+  async findCurrentApproved(@CurrentUser() currentUser: UserEntity): Promise<ListingEntity[]> {
+    return await this.listingService.findCurrentApproved(currentUser.id);
+  }
+
+  @UseGuards(AuthenticationGuard)
+  @Get('current/rejected')
+  async findCurrentRejected(@CurrentUser() currentUser: UserEntity): Promise<ListingEntity[]> {
+    return await this.listingService.findCurrentRejected(currentUser.id);
+  }
+
+  @UseGuards(AuthenticationGuard)
+  @Get('current/pending')
+  async findCurrentPending(@CurrentUser() currentUser: UserEntity): Promise<ListingEntity[]> {
+    return await this.listingService.findCurrentPending(currentUser.id);
   }
 
   @Get(':id')

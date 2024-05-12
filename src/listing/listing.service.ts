@@ -22,9 +22,11 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
   }
 
   async findAll():Promise<ListingEntity []> {
-    return await this.listingRepository.find();
+    return await this.listingRepository.find({
+      relations: ['addedBy'],
+    });
   }
-
+  
   ///function to retrieve all findAllForApproval
   async findAllForApproval(): Promise<ListingEntity[]> {
     return await this.listingRepository.find({
@@ -60,6 +62,44 @@ async create(createListingDto: CreateListingDto,currentUser:UserEntity):Promise 
     },
    })
   }
+
+
+//////////////this is for the current user only 
+async findCurrentApproval(userId: number): Promise<ListingEntity[]> {
+  return await this.listingRepository.find({
+    where: {
+      addedBy: { id: userId },
+      sendStatus: SendStatus.SEND_TO_ADMIN,
+    },
+  });
+}
+
+async findCurrentApproved(userId: number): Promise<ListingEntity[]> {
+  return await this.listingRepository.find({
+    where: {
+      addedBy: { id: userId },
+      approvalStatus: ApprovalStatus.APPROVED,
+    },
+  });
+}
+
+async findCurrentRejected(userId: number): Promise<ListingEntity[]> {
+  return await this.listingRepository.find({
+    where: {
+      addedBy: { id: userId },
+      approvalStatus: ApprovalStatus.REJECTED,
+    },
+  });
+}
+
+async findCurrentPending(userId: number): Promise<ListingEntity[]> {
+  return await this.listingRepository.find({
+    where: {
+      addedBy: { id: userId },
+      approvalStatus: ApprovalStatus.PENDING,
+    },
+  });
+}
 
 
 
