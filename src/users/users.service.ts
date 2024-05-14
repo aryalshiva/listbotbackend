@@ -38,7 +38,7 @@ export class UsersService {
     delete userExist.password;
     return userExist;
     }
-  
+    
   create(CreateUserDto:CreateUserDto) {
     return 'This action adds a new user';
   }
