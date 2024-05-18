@@ -56,10 +56,14 @@ export class UsersService {
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+//this is to remove the user by id this can only done by the admin user 
+ async remove(id: number) {
+    const user =await this.usersRepository.findOneBy({id});
+    if (!user) throw new NotFoundException('User not found.');
+    
+    await this.usersRepository.delete(id);
   }
+
 
   async findUserByEmail(email:string){
     return await this.usersRepository.findOneBy({email});

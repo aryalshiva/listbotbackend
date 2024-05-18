@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -56,10 +56,23 @@ export class UsersController {
     return this.usersService.update(+id, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  //current user can delete his own information 
+  @UseGuards(AuthenticationGuard)
+  @Delete('me/:id')
+  async removeMe(@Param('id') id: string, @CurrentUser() currentUser: UserEntity): Promise<void> {
+    if (currentUser.id !== +id) {
+      throw new BadRequestException('You can only delete your own account.');
+    }
+    await this.usersService.remove(currentUser.id);
   }
+
+  //admin user can delete any user by id 
+  @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
+  @Delete(':id')
+  async remove(@Param('id') id: string): Promise<void> {
+    await this.usersService.remove(+id);
+  }
+
   @UseGuards(AuthenticationGuard)
   @Get('me')
   getProfile(@CurrentUser() currentUser:UserEntity){
