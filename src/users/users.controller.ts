@@ -13,7 +13,7 @@ import { Roles } from 'src/utility/common/user-roles.enum';
 import { AuthorizeGuard } from 'src/utility/guards/authorization.guard';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('users')
+@ApiTags('user')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -48,6 +48,7 @@ export class UsersController {
   }
   //this comment can be used if to declare two guards but authorize role have been implemented improved down code  
  // @AuthorizeRoles(Roles.ADMIN)
+ @ApiTags('admin')
  @ApiBearerAuth()
  @AuthorizeRoles(Roles.ADMIN)
   @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
@@ -89,6 +90,7 @@ export class UsersController {
   }
 
   //admin user can delete any user by id 
+  @ApiTags('admin')
   @ApiBearerAuth()
   @AuthorizeRoles(Roles.ADMIN)
   @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
