@@ -19,6 +19,7 @@ export class ListingController {
   constructor(private readonly listingService: ListingService) {}
 
   //  for creating a listing
+  @ApiTags('user')
   @Post()
   @UseGuards(AuthenticationGuard)
   @ApiOperation({ summary: 'Create a new listing' })
@@ -36,6 +37,7 @@ export class ListingController {
   }
 
   //  for retrieving listings pending approval (admin only)
+  @ApiTags('admin')
   @Get('forApproval')
   @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
   @ApiOperation({ summary: 'Retrieve listings pending approval (admin only)' })
@@ -45,6 +47,7 @@ export class ListingController {
   }
 
   //  for retrieving approved listings (admin only)
+  @ApiTags('admin')
   @Get('approved')
   @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
   @ApiOperation({ summary: 'Retrieve approved listings (admin only)' })
@@ -54,6 +57,7 @@ export class ListingController {
   }
 
   //  for retrieving rejected listings (admin only)
+  @ApiTags('admin')
   @Get('rejected')
   @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
   @ApiOperation({ summary: 'Retrieve rejected listings (admin only)' })
@@ -63,6 +67,7 @@ export class ListingController {
   }
 
   //  for retrieving pending listings (admin only)
+  @ApiTags('user')
   @Get('pending')
   @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
   @ApiOperation({ summary: 'Retrieve pending listings (admin only)' })
@@ -72,6 +77,7 @@ export class ListingController {
   }
 
   //  for retrieving current user's listings pending approval
+  @ApiTags('user')
   @Get('current/forApproval')
   @UseGuards(AuthenticationGuard)
   @ApiOperation({ summary: 'Retrieve current user\'s listings pending approval' })
@@ -81,6 +87,7 @@ export class ListingController {
   }
 
   //  for retrieving current user's approved listings
+  @ApiTags('user')
   @Get('current/approved')
   @UseGuards(AuthenticationGuard)
   @ApiOperation({ summary: 'Retrieve current user\'s approved listings' })
@@ -90,6 +97,7 @@ export class ListingController {
   }
 
   //  for retrieving current user's rejected listings
+  @ApiTags('user')
   @Get('current/rejected')
   @UseGuards(AuthenticationGuard)
   @ApiOperation({ summary: 'Retrieve current user\'s rejected listings' })
@@ -99,6 +107,7 @@ export class ListingController {
   }
 
   //  for retrieving current user's pending listings
+  @ApiTags('user')
   @Get('current/pending')
   @UseGuards(AuthenticationGuard)
   @ApiOperation({ summary: 'Retrieve current user\'s pending listings' })
@@ -114,6 +123,8 @@ export class ListingController {
   async findOne(@Param('id') id: string): Promise<ListingEntity> {
     return await this.listingService.findOne(+id);
   }
+
+  @ApiTags('user')
   @Patch('update/:id')
   @UseGuards(AuthenticationGuard)
   @ApiOperation({ summary: 'Update a listing after it has been sent to admin' })
@@ -149,6 +160,8 @@ export class ListingController {
     return await this.listingService.update(+id ,approvalStatusDto)
   }
   
+  //this is not implemented yet
+  @ApiTags('user')
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a listing' })
   @ApiResponse({ status: 200, description: 'The listing has been successfully deleted' })

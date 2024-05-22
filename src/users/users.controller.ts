@@ -92,7 +92,6 @@ export class UsersController {
   //admin user can delete any user by id 
   @ApiTags('admin')
   @ApiBearerAuth()
-  @AuthorizeRoles(Roles.ADMIN)
   @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
   @Delete(':id')
   @ApiOperation({ summary: 'Delete any user account (Admin only)' })

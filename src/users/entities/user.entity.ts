@@ -25,6 +25,6 @@ export class UserEntity {
     @CreateDateColumn()
     UpdatedAt: Timestamp;
 
-    @OneToMany(() => ListingEntity, (list) => list.addedBy, { lazy: true }) // Added { lazy: true }
+    @OneToMany(() => ListingEntity, (list) => list.addedBy, { lazy: true }) 
     listings: Promise<ListingEntity[]>; // Changed type to Promise<ListingEntity[]>
 }
