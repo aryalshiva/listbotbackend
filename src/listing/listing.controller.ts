@@ -160,12 +160,26 @@ export class ListingController {
     return await this.listingService.update(+id ,approvalStatusDto)
   }
   
-  //this is not implemented yet
-  @ApiTags('user')
-  @Delete(':id')
-  @ApiOperation({ summary: 'Delete a listing' })
-  @ApiResponse({ status: 200, description: 'The listing has been successfully deleted' })
-  remove(@Param('id') id: string) {
-    return this.listingService.remove(+id);
-  }
+   // User can delete their own listing and return the deleted listing
+   @ApiTags('user')
+   @Delete('user/:id')
+   @UseGuards(AuthenticationGuard)
+   @ApiOperation({ summary: 'Delete own listing by ID' })
+   @ApiResponse({ status: 200, description: 'The listing has been successfully deleted', type: ListingEntity })
+   async removeUserListing(
+     @Param('id') id: string,
+     @CurrentUser() currentUser: UserEntity
+   ): Promise<ListingEntity> {
+     return await this.listingService.removeUserListingById(+id, currentUser);
+   }
+ 
+   // Admin can delete any listing and return the deleted listing
+   @ApiTags('admin')
+   @Delete('admin/:id')
+   @UseGuards(AuthenticationGuard, AuthorizeGuard([Roles.ADMIN]))
+   @ApiOperation({ summary: 'Admin delete any listing by ID' })
+   @ApiResponse({ status: 200, description: 'The listing has been successfully deleted', type: ListingEntity })
+   async removeListingByIdAdmin(@Param('id') id: string): Promise<ListingEntity> {
+     return await this.listingService.removeListingByIdAdmin(+id);
+   }
 }

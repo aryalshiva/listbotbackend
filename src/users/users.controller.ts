@@ -89,17 +89,19 @@ export class UsersController {
     await this.usersService.remove(currentUser.id);
   }
 
+
+  //this can only delete the user that has not created the listings for the user who has created the listings we need to delete all the listings associated id added by 
   //admin user can delete any user by id 
-  @ApiTags('admin')
-  @ApiBearerAuth()
-  @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
-  @Delete(':id')
-  @ApiOperation({ summary: 'Delete any user account (Admin only)' })
-  @ApiResponse({ status: 200, description: 'User account deleted successfully.' })
-  @ApiResponse({ status: 404, description: 'User not found.' })
-  async remove(@Param('id') id: string): Promise<void> {
-    await this.usersService.remove(+id);
-  }
+  // @ApiTags('admin')
+  // @ApiBearerAuth()
+  // @UseGuards(AuthenticationGuard,AuthorizeGuard([Roles.ADMIN]))
+  // @Delete(':id')
+  // @ApiOperation({ summary: 'Delete any user account (Admin only)' })
+  // @ApiResponse({ status: 200, description: 'User account deleted successfully.' })
+  // @ApiResponse({ status: 404, description: 'User not found.' })
+  // async remove(@Param('id') id: string): Promise<void> {
+  //   await this.usersService.remove(+id);
+  // }
 
   @UseGuards(AuthenticationGuard)
   @Get('me')

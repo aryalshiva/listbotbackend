@@ -169,12 +169,28 @@ async findCurrentPending(userId: number): Promise<ListingEntity[]> {
     Object.assign(listing, fields);
     return await this.listingRepository.save(listing);
   }
+
+    // User can delete their own listing and return the deleted listing
+    async removeUserListingById(id: number, currentUser: UserEntity): Promise<ListingEntity> {
+      const listing = await this.findOne(id);
+      if (!listing) {
+        throw new NotFoundException('Listing not found');
+      }
+      if (listing.addedBy.id !== currentUser.id) {
+        throw new BadRequestException('You can only delete your own listings');
+      }
+      await this.listingRepository.delete(id);
+      return listing;
+    }
   
-
-
-  
-
-  remove(id: number) {
-    return `This action removes a #${id} listing`;
+    // Admin can delete any listing and return the deleted listing
+    async removeListingByIdAdmin(id: number): Promise<ListingEntity> {
+      const listing = await this.findOne(id);
+      if (!listing) {
+        throw new NotFoundException('Listing not found');
+      }
+      await this.listingRepository.delete(id);
+      return listing;
+    }
   }
-}
+
